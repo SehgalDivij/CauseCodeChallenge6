@@ -29,10 +29,10 @@ class Profiles(views.APIView):
             'image': profile.image,
             'bio': profile.bio,
             'location': profile.location,
-            'interests': interest,
-            'roles': role,
-            'social_reach': s_reach,
-            'meta_data': meta
+            'interests': [str(i.interest) for i in interest],
+            'roles': [str(r.role) for r in role],
+            'social_reach': [({item.network: item.link}) for item in s_reach],
+            'meta_data': [({item.field: item.value}) for item in meta]
         }
         return profile
 
@@ -58,8 +58,9 @@ class Profiles(views.APIView):
         if isinstance(record, str):
             return Response(data=record)
         else:
-            profile = self.make_profile_object(record.prof, record.interest, record.role, record.s_reach, record.meta)
-            profiles_list = ProfileSerializer(profiles, many=True)
+            prof, interest, role, s_reach, meta = record
+            profile = self.make_profile_object(prof, interest, role, s_reach, meta)
+            profiles_list = ProfileSerializer(profile)
             return Response(data=profiles_list.data)
 
     def get(self, *args, **kwargs):
@@ -71,5 +72,4 @@ class Profiles(views.APIView):
                 profile = self.make_profile_object(record, interest, role, social_reach, meta_data)
                 profiles.append(profile)
         profiles_list = ProfileSerializer(profiles, many=True)
-        print(profiles_list.data)
         return Response(data=profiles_list.data)

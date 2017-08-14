@@ -18,8 +18,11 @@ def get_user_profile_image(body):
     """
         Get user's profile image.
     """
-    attrs = [attr.split(':', 1) for attr in body.find('div', 'head').find('div')['style'].split(';')]
-    url_dirty = attrs[0][1]
+    style = [attr.split(':', 1) for attr in body.find('div', 'head').find('div')['style'].split(';')]
+    attrs = {}
+    for sty in style[:-1]:
+        attrs[sty[0]] = sty[1]
+    url_dirty = attrs['background-image']
     url_clean = url_dirty[4:-1]
     return url_clean
 
@@ -58,7 +61,7 @@ def get_user_bio(body):
     """
     bio = ''
     for p in body.find('div', 'body').find('section', 'bio').find_all('p'):
-        bio = '%s\n' % p.get_text()
+        bio = '%s\n%s' % (bio, p.get_text())
     return str(bio)
 
 
@@ -77,9 +80,7 @@ def get_user_meta_info(body):
     meta_section = body.find('div', 'body').find('section', 'meta')
     meta_data = {}
     if meta_section is not None:
-        print('meta_section: %s' % meta_section.get_text())
         meta_raw = meta_section.find_all('li', 'meta-section')
-        print('meta raw: %s' %  meta_raw)
         if meta_raw is not None:
             for item in meta_raw:
                 category = item.find('div', 'meta-header').get_text()

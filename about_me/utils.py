@@ -4,6 +4,10 @@ from django.db import transaction
 
 
 def add_to_database(username, user_data):
+    interests = []
+    roles = []
+    s_reaches = []
+    metas = []
     with transaction.atomic():
         prof = Profile(
             username=username,
@@ -18,18 +22,22 @@ def add_to_database(username, user_data):
             interest.save()
             interest.profile.add(prof)
             interest.save()
+            interests.append(interest)
         for role in user_data['roles']:
             role = Role(role = role)
             role.save()
             role.profile.add(prof)
             role.save()
+            roles.append(role)
         for network, link in user_data['social_reach'].items():
             s_reach = SocialReach(profile=prof, link = link,network = network)
             s_reach.save()
+            s_reaches.append(s_reach)
         for field, value in user_data['meta_data'].items():
             meta = MetaData(profile=prof,field = field,value = value)
             meta.save()
-        return (prof, interest, role, s_reach, meta)
+            metas.append(meta)
+        return (prof, interests, roles, s_reaches, metas)
 
 
 def save_about_me_profile(username: str):
