@@ -1,6 +1,6 @@
 ### CauseCode Assignment
 
-Added Scraper to scrape user profile info from profiles present at  about.me
+Scraper to scrape user profile info from profiles present at `about.me` as per Challenge 6.
 
 ### Assumptions
 
