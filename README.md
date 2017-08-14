@@ -43,19 +43,19 @@ If the profile has already been fetched once, it will be fetched from the databa
 
 ## Running This Application
 
-1. Clone the repository
+1. Clone this repository
 
 2. Install dependencies from `requirements.txt` file using the command:
 
-    pip install -r requirements.txt
+        pip install -r requirements.txt
 
 3. Run the following commands to setup the SQLite Database:
 
-    python manage.py makemigrations
-    python manage.py migrate
+        python manage.py makemigrations
+        python manage.py migrate
 
 4. Run the application:
 
-    python manage.py runserver
+        python manage.py runserver
 
 In case `python3.x` as well as `python2` are installed on the system, use `python3` instead of `python` and `pip3` instead of ` pip` to make sure `python3` is used to run the application as well as `pip3` is used to install dependencies for the application.
