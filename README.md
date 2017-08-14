@@ -29,13 +29,13 @@ The application will work fine even with user names outside of this list that ex
 
 Make a POST Request to the url
 
-        www.localhost:8000/api/about_me/profiles/
+    www.localhost:8000/api/about_me/profiles/
 
 with the following body:
 
-        {
-            "username":"user_name here"
-        }
+    {
+        "username":"user_name here"
+    }
 
 If the profile has not been fetched before, it will be fetched from their website and added to the database.
 
