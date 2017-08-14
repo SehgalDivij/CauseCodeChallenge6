@@ -93,12 +93,12 @@ def get_user_social_links(body):
         Get User Social Links in an array.
     """
     social_links = body.find('div', 'body').find_all('a', 'social-link')
-    links = []
+    links = {}
     for link in social_links:
         name = str(link['title'].split(' ')[-1])
         if not name.lower() in ['message', 'email']:
             url = str(link['href'])
-            links.append({ name: url })
+            links[name] = url
     return links
 
 
@@ -121,7 +121,10 @@ def get_profile_info(user_name: str):
             message is displayed saying that no such profile exists.
     """
     session = requests.session()
-    res_page = session.get('http://www.about.me/%s' % user_name).text.replace("\n", "").strip()
+    try:
+        res_page = session.get('http://www.about.me/%s' % user_name).text.replace("\n", "").strip()
+    except requests.exceptions.ConnectionError as err:
+        return 'Could not establish connection to remote webpage'
     body = BeautifulSoup(res_page, 'html.parser').find('body')
     if is_user_profile(body):
         roles, location = get_roles_and_location(body)
@@ -140,4 +143,4 @@ def get_profile_info(user_name: str):
         }
         return profile
     else:
-        return 'No profile found for that username'
+        return 'No profile exists for username: %s' % username
