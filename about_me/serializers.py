@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from .models import *
 
 
 class InterestSerializer(serializers.Serializer):
@@ -31,8 +30,3 @@ class ProfileSerializer(serializers.Serializer):
     website = serializers.URLField()
     meta_data = MetaDataSerializer(many=True)
     location = serializers.CharField(max_length=80)
-
-    # class Meta:
-    #     fields = ('user_name', 'full_name', 'image', 'bio',
-    #               'interests', 'roles', 'social_reach',
-    #               'website', 'meta_data', 'location')

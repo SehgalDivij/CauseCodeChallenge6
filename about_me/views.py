@@ -46,12 +46,12 @@ class Profiles(views.APIView):
     def post(self, *args, **kwargs):
         try:
             username = self.request.data['username']
-            user = Profile.objects.get(username=username)
-            if user is not None:
+            user = Profile.objects.filter(username=username)
+            if len(user) > 0:
                 interest, role, social_reach, meta_data = self.get_related_records(user)
-                profile = self.make_profile_object(user, interest, role, s_reach, meta)
-                profiles_list = ProfileSerializer(profiles, many=True)
-                return Response(data=profiles_list.data)
+                profile = self.make_profile_object(user[0], interest, role, social_reach, meta_data)
+                resp_data = ProfileSerializer(profile)
+                return Response(data=resp_data.data)
         except KeyError:
             return Response(data="Please enter username")
         record = save_about_me_profile(username)
